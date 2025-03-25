@@ -1,0 +1,35 @@
+/* PRODUCT GRID VIEW */
+/* #product__breadcrumb {
+  margin-top: 60px;
+} */
+
+.product_breadcrumb_overlay {
+  padding: 60px 0px;
+}
+
+#product__breadcrumb h4 {
+  font-size: 35px;
+}
+
+#product__breadcrumb ul {
+  margin-top: 10px;
+}
+
+.product__pro_details_text h4 {
+  display: flex;            /* 让 h4 变成 flex 容器 */
+  align-items: center;      /* 让文字和按钮垂直居中 */
+  gap: 10px;                /* 控制 h4 和按钮之间的间距 */
+  justify-content: space-between;
+  width: 100%;
+}
+
+.product__pro_details_text .description {
+  font-size: 15px;
+}
+
+
+.SimulatedShoppingCart{
+  margin-bottom: 10px;
+  display: flex;
+}
+  

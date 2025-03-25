@@ -1,0 +1,283 @@
+:root {
+    --fenghua_1:#2E5D45;
+    --fenghua_2:#1E4A3C;
+}
+.bg-cover{
+    background-position: center center;
+    background-size: cover;
+  }
+/* body */
+body{
+    overflow-x: hidden;
+    background-color: #f5f3ee;
+    position: relative;
+}
+
+
+
+/* 購物車樣式 */
+
+.floating-cart-button {
+    position: fixed;
+    bottom: 20px;
+    right: -60px;
+    background-color: #3B7459; /* 半透明黑 */
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid white;
+    z-index: 9999;
+    opacity: 100;
+    transition: transform 0.5s ease-in,opacity 0.3s;
+  }
+  .floating-cart-button:hover {
+    background-color: #2E5D45; /* 比深色更淺一點，提升可讀性 */
+    cursor: pointer;
+    border: 2px solid white;
+    
+  }
+/* navbar上面的購物車 */
+.cart-badge-nav {
+    top: -5px;      /* 向上移動 */
+    right: -10px;   /* 向右移動 */
+    font-size: 12px; /* 調整字體大小 */
+    padding: 4px 6px;
+    border-radius: 50%; /* 讓徽章圓潤 */
+    background-color: #356865;
+}
+
+/* 徽章樣式 */
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #c49a4a; /* 更亮的金色 */
+    color: white;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 22px;
+    min-height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  
+  /* 包含按鈕和徽章的容器 */
+  .button-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+  }
+/* end */
+
+/* 內文 */
+.text-title{
+    color: var(--fenghua_1);
+}
+.text-sub_title{
+    color: var(--fenghua_2);
+}
+/* end */
+
+/* 購物車結帳按鈕 */
+.btn_cart{
+    background-color: rgba(255, 255, 255, 0);
+    border: 2px solid white;
+    width: 140px;
+    padding: 10px;
+}
+.btn_cart:hover{
+    background-color: #b89965;
+    border: 2px solid black;
+}
+/* end */
+/* 按鈕 */
+.btn_login{
+    background-color: rgba(255, 255, 255, 0);
+    width: 100%;
+    border: 2px solid #234642;
+    padding: 10px;
+}
+.btn_login:hover{
+    background-color: #2E5D45;
+    border: 2px solid #000000;
+    color: white;
+}
+.btn_addToCart{
+    background-color: #3B7459;
+    color: white;
+    border: 1px solid #3B7459;
+    
+}
+.btn_addToCart:hover {
+    background-color: #2E5D45; /* 稍微加亮的綠色 */
+    border: 1px solid #3B7459;
+    color: rgb(239, 237, 237);
+}
+/* end */
+
+
+/* nav */
+.navbar {
+    transition: background-color 0.3s ease-in-out; /* 確保過渡動畫適用於所有狀態 */
+    background-color: transparent; /* 初始透明 */
+    padding: 15px 50px;
+}
+.navbar .bg-btn-navbar {
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    font-weight: bold;
+    background-color: transparent; /* 初始透明 */
+}
+
+.navbar.scrolled {
+    transition: background-color 0.3s ease-in-out;
+    background-color: #ffffff; /* 滾動後的背景色 */
+}
+
+.nav-link{
+    color: #333;
+    font-size: 16px;
+}
+
+.nav-link:hover{
+    color: #356865;
+}
+
+.dropdown-item {
+    color:black;
+    background-color: #ffffff;
+    border-bottom: 0.5px solid black;
+    padding: 10px;
+}
+.dropdown-item:hover{
+    background-color: #356865;;
+    color:#ffffff; ;
+}
+.dropdown-divider{
+    color: rgb(244, 244, 244);
+}
+.dropdown-toggle:focus {
+    color: rgb(0, 0, 0); /* 恢復為預設顏色 */
+}
+.dropdown-menu{
+     padding: 0;
+}
+/* end */
+footer{
+    background-color: #234642;
+}
+/* info_area */
+.info_area{
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    background-color: #234642;
+}
+/* end */
+
+/* rwd */
+/* 768以上 */
+@media screen and (min-width:768px) {
+    .navbar .dropdown-menu {
+        display: block;
+        visibility: hidden ;
+        opacity: 0 ;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+    
+
+    .navbar .nav-item.dropdown:hover .dropdown-menu {
+        visibility: visible;
+        opacity: 1 ;
+        transform: translateY(0);
+    }
+    
+}
+/* end */
+
+/* 回到頂部按鈕 */
+.back_to_top {
+    position: fixed;
+    width: 50px;
+    height: 50px; 
+    top: 80%;
+    right: -60px;
+    z-index: 9999;
+    transition: transform 0.5s ease-out,opacity 0.3s;
+    opacity: 0;
+    background-color: #3B7459;
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1.5px solid white;
+    align-items: center;
+    justify-content: center;
+}
+.show_btn{
+    transition: transform 0.5s ease-in, opacity 0.3s;
+    opacity: 100;
+    transform: translateX(-80px);
+}
+
+.back_to_top .top {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.back_to_top:hover {
+    background-color: #2E5D45; /* 增加背景色方便識別 */
+    cursor: pointer;
+    border: 1.5px solid white;
+}
+/* end */
+
+
+/* 768以下 */
+@media screen and (max-width:768px){
+    .dropdown-item {
+    color:#356865;
+    background-color: #ffffff;
+    border: none;
+    border-bottom: 0.5px solid rgba(255, 255, 255,0.2);
+    /* padding: 10px; */
+    }
+    .dropdown-toggle{
+        color: rgb(0, 0, 0);
+    }
+    .dropdown-toggle:hover{
+        color: rgb(0, 0, 0);
+    }
+
+    .nav-item:hover{
+        background-color: #356865;
+    }
+    /* 當 .nav-item 被 hover 時，內部的 .nav-link 變白 */
+    .nav-item:hover .nav-link {
+        color: white;
+    }
+    /* 點擊後在失去焦點時恢復顏色 */
+
+    .dropdown-menu{
+        border: 0.5px solid rgba(255, 255, 255,0.2);
+        border-radius: 0px;
+    }
+    
+}
+/* end */

@@ -1,0 +1,5 @@
+:root table.dataTable tbody tr.selected {
+    background-color: red !important;
+    color: red !important;
+}
+

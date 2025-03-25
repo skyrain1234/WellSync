@@ -1,0 +1,112 @@
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.back-btn:hover {
+    background-color: #e0e0e0;
+}
+/* 自訂水平線樣式 */
+.separator {
+    border: 1px solid #3f3f3f; /* 更改線條顏色和粗細 */
+    margin: 20px 0; /* 上下間距 */
+}
+
+.option-btn {
+    background-color: #fafafa;
+    border: 1px solid #ddd;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 5px;
+}
+
+.option-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.option-btn.selected {
+    background-color: #2E5D45;
+    color: white;
+}
+
+/* 增加空隙 */
+.question-gap {
+    margin-bottom: 20px;
+    /* 在題目和選項之間加入空隙 */
+}
+
+/* 目標分類樣式start */
+.goal-item{
+    margin-bottom: 1rem; /* 使用 Bootstrap 的間距系統 */
+    padding: 0.5rem; /* 添加內距，讓選項不會緊貼邊緣 */
+}
+.goal-item input[type="checkbox"] {
+    margin-right: 5px; /* 複選框與文字的間距 */
+    /* 隱藏預設的複選框 */
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.goal-item input[type="radio"] {
+    margin-right: 5px; /* 複選框與文字的間距 */
+    /* 隱藏預設的複選框 */
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.goal-item label {
+    cursor: pointer; /* 標籤文字也變成可點擊 */
+    display: block; /* 讓 label 佔據整個容器寬度 */
+    width: 100%; /* 確保 label 佔據整個容器寬度 */
+  }
+  /* 未選中的目標樣式 */
+  .goal-item label span {
+    background-color: #ffffff; /* 白色 */
+    border: 1px solid #ddd;
+    border-radius: 20px; /* 圓角 */
+    padding: 10px 20px;
+    transition: background-color 0.3s; /* 平滑過渡效果 */
+    display: block; /* 讓 span 佔據整個 label 寬度 */
+    text-align: center; /* 文字置中 */
+    width: 100%; /* 確保佔滿整個父容器 */
+  }
+  /* 選中時的目標樣式 */
+  .goal-item input[type="checkbox"]:checked + label span {
+    background-color: #2E5D45; /* 深綠色 */
+    color: white; /* 文字顏色改為白色 */
+  }
+
+  .goal-item input[type="radio"]:checked + label span { /* 修改為 radio */
+    background-color: #2E5D45; /* 深綠色 */
+    color: white; /* 文字顏色改為白色 */
+  }
+
+  /* 使用者知道哪個是選中的目標 */
+  .goal-item label span:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 陰影效果 */
+    transform: translateY(-2px); /* 向上微調 */
+}
+
+.goal-item.selected {
+    background-color: #2E5D45; /* 深綠色 */
+    color: white; /* 文字顏色改為白色 */
+}
+
+/* 目標分類樣式end */
+

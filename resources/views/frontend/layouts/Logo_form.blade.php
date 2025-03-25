@@ -1,0 +1,1 @@
+<img class="Logo_Image" src="{{asset('uploads/logoHorizontal.png')}}" >

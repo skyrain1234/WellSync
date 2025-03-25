@@ -1,0 +1,41 @@
+/* Slick.js 過渡效果 */
+.slick-slide {
+    transform: scale(1);
+    transition: all 0.4s ease-in-out;
+    padding: 20px 0;
+}
+
+.slick-slide img {
+    transition: all 0.4s ease-in-out;
+}
+
+.slick-center {
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+.custom-prev, .custom-next {
+    background: rgba(0, 0, 0, 0);
+    border: none;
+    color: #2E5D45; /* 自訂箭頭顏色 */
+    font-size: 24px;
+}
+
+.custom-prev:hover, .custom-next:hover {
+    color: #1E4A3C; /* 懸停效果 */
+}
+.custom-prev:focus, .custom-next:focus {
+    outline: none; /* 移除按鈕的預設外框 */
+    color: #1E4A3C;    /* 確保點擊後顏色一致 */
+}
+
+.btn_slick{
+    background-color: #44946b; 
+    color: white;
+    border: 1px solid #CDD4DA;
+    
+}
+.btn_slick:hover{
+    background-color: #2E5D45;
+    border: 1px solid #CDD4DA;
+    color: white;
+}
