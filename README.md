@@ -12,7 +12,6 @@ npm install
 複製1份.env.example 將其檔名改為 .env ，並自己更改資料庫設定
 </br>
 ## 開啟本地端server
-</br>
 啟用vite
 </br>
 ->終端機 輸入 npm run dev
