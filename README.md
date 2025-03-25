@@ -1,12 +1,3 @@
-## summernote文字欄位插件
-https://github.com/summernote/summernote
-
-## Datatable 安裝
-
-請參考 [Yajra Datatables 官方文件](https://yajrabox.com/docs/laravel-datatables/master/quick-starter)
-## yoeunes/toastr(暫時移除)
-https://github.com/yoeunes/toastr
-
 ## 資料表下載
 
 [點擊這裡下載資料表](https://drive.google.com/file/d/1ngB5VWBfAEpDPLnXOOBvRZTpqDwqC-R1/view?usp=sharing)
@@ -46,13 +37,6 @@ http://127.0.0.1:8000
 開啟佇列(避免超賣等問題)
 </br>
 ->終端機 輸入 php artisan queue:work
-
-
-## API串接測試
-http://127.0.0.1:8000/api/test
-</br>請先確認php artisan serve是否啟動
-</br>對外的api 需寫在route/api.php
-</br>若成功串接可獲得會員資料
 
 ## 後台
 http://127.0.0.1:8000/admin/login
