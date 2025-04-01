@@ -87,7 +87,7 @@
 
                             <div class="row mt-auto d-flex align-items-center">
                                 <div class="col-6 text-end">
-                                    <h6 class="text-danger mb-0">${{ $product->price }} / 顆</h6>
+                                    <h6 class="text-danger mb-0">${{ $product->price }} / 份</h6>
                                 </div>
                                 <div class="col-6 d-flex justify-content-center">
                                     <form action="{{ route('add-to-cart', $product->id) }}" method="POST">

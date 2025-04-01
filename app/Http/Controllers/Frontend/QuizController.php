@@ -8,11 +8,21 @@ use App\Models\FormQuestion;
 use App\Models\FormTitle;
 use App\Models\UserAnswer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Darryldecode\Cart\Facades\CartFacade;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
+use App\Models\Product;
+use App\Traits\ScoreSync;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+
+
+
+
 
 class QuizController extends Controller
 {
+    use ScoreSync;
     public function index(): View
     {
         // 取得所有 FormGoal 的資料
@@ -182,25 +192,12 @@ class QuizController extends Controller
             // 使用總加權分數除以題目數量來計算平均分數
             $averageScore = $questionCounts[$i] > 0 ? round($totalWeightedScores[$i] / $questionCounts[$i]) : 0;
             // 限制最大值為 100
-            $averageScores["角" . ($i + 1)] = min($averageScore, 100); // 使用 min 函數限制最大值
+            $averageScores[] = min($averageScore, 100); // 使用 min 函數限制最大值
         }
-        // 待辦 儲存到資料庫   改成存averageScores、titleNames
-        UserAnswer::create([
-            'user_id' => Auth::id(), // 如果使用者已登入，則儲存使用者 ID
-            'question_id' => $questionId,
-            'answer' => $answerData['answer'],
-            'values' => json_encode($values),
-            'weights' => json_encode($weights),
-        ]);
-        
         return response()->json([
             'averageScores' => $averageScores,
             'titleNames' => $titleNames, // 新增：傳遞 titleNames
         ]);
-         // 刪除該使用者之前的所有 UserAnswer 記錄
-        // if (Auth::check()) {
-        //     UserAnswer::where('user_id', Auth::id())->delete();
-        // }
     }
 
     // 根據權重生成選項分數的輔助方法
@@ -235,6 +232,97 @@ class QuizController extends Controller
         return $values;
     }
 
+    // ✅ **更新訪客購物車順序**
+    private function updateCartOrder($id)
+    {
+        $order = session('cart_order', []);
+        if (!in_array($id, $order)) {
+            $order[] = $id;
+        }
+        session(['cart_order' => $order]);
+    }
+    public function getRecommendations(Request $request)
+    {
+        $titlename = $request->input('categories'); // 例如：['作息', '心理']
+        $averageScores = $request->input('averageScores');
+        // 找出對應的 category_id
+        $formTitles_id = FormTitle::whereIn('title_name', $titlename)->pluck('id');
+        $products = Product::whereIn('form_title_id', $formTitles_id)->get()->take(3);
+        $quantity = 1;
+    
+        if (Auth::check()) {
+            // 會員模式：儲存到資料庫
+            $userId = Auth::id();
+             // 檢查資料庫是否有資料
+                $existingUserScores = DB::table('user_scores')
+                    ->where('user_id',$userId)
+                    ->first();
+    
+                if ($existingUserScores) {
+                    // 更新數量
+                    DB::table('user_scores')
+                        ->where('id', $existingUserScores->id)
+                        ->update([
+                            'averageScores' => $averageScores,
+                            'updated_at' => now()
+                        ]);
+                } else {
+                    // 新增到資料庫
+                    DB::table('user_scores')->insert([
+                        'user_id' => $userId,
+                        'averageScores' => $averageScores,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+            }
+    
+            foreach ($products as $product) {
+                $cartItem = DB::table('shopping_carts')
+                    ->where('user_id', $userId)
+                    ->where('product_id', $product->id)
+                    ->first();
+    
+                if ($cartItem) {
+                    DB::table('shopping_carts')
+                        ->where('user_id', $userId)
+                        ->where('product_id', $product->id)
+                        ->increment('quantity', $quantity);
+                } else {
+                    DB::table('shopping_carts')->insert([
+                        'user_id' => $userId,
+                        'product_id' => $product->id,
+                        'quantity' => $quantity,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            }
+        } else {
+            // 訪客模式：使用 Session
+            foreach ($products as $product) {
+                // 確保 Cart::get() 返回正確的資料
+                $cartItem = CartFacade::get($product->id);    
+                if ($cartItem) {
+                    // 如果商品已經存在，更新數量
+                    CartFacade::update($product->id, ['quantity' => $quantity]);
+
+                } else {
+                    // 如果商品不存在，加入購物車
+                    CartFacade::add([
+                        'id' => $product->id,
+                        'name' => $product->name,
+                        'price' => $product->price,
+                        'quantity' => $quantity,
+                        'attributes' => ['image' => $product->thumb_image]
+                    ]);
+                    $this->updateCartOrder($product->id);
+                }
+            }
+        }
+    
+        return response()->json($products);
+    }
+    
 }
 
 

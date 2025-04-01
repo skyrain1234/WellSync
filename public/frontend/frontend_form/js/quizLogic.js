@@ -65,9 +65,9 @@ const quizLogic = {
             // 取得選項的數值
             const optionValues = selectedOptionData.values;
             // 在 console 中顯示權重
-            console.log(`問題 ${questionId} 的答案 ${answer} 的權重是 ${titleWeights.weight_1},${titleWeights.weight_2},${titleWeights.weight_3},${titleWeights.weight_4},${titleWeights.weight_5}`);
+            // console.log(`問題 ${questionId} 的答案 ${answer} 的權重是 ${titleWeights.weight_1},${titleWeights.weight_2},${titleWeights.weight_3},${titleWeights.weight_4},${titleWeights.weight_5}`);
             // 在 console 中顯示數值
-            console.log(`問題 ${questionId} 的答案 ${answer} 的數值是 ${optionValues[0]},${optionValues[1]},${optionValues[2]},${optionValues[3]},${optionValues[4]}`);
+            // console.log(`問題 ${questionId} 的答案 ${answer} 的數值是 ${optionValues[0]},${optionValues[1]},${optionValues[2]},${optionValues[3]},${optionValues[4]}`);
             //儲存答案
             quizData.addUserAnswer(questionId, {
                 answer: answer,
@@ -104,6 +104,8 @@ const quizLogic = {
                 .catch(error => {
                     console.error('發生錯誤:', error);
                 });
+                $("#next-question").addClass("d-none");
+                $("#last-question").removeClass("d-none");
         } else {
             // 否則，顯示下一題
             quizUI.showQuestion(currentQuestionIndex, quizData.getAllQuestions());

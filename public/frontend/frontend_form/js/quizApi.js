@@ -3,7 +3,7 @@ import quizUI from './quizUI.js';
 
 const quizApi = {
     fetchQuestions: function (selectedGoals, currentQuestionIndex) {
-        const url = '/front/showQuestions';
+        const url = '/showQuestions';
         return fetch(url, {
             method: 'POST',
             headers: {
@@ -19,7 +19,7 @@ const quizApi = {
     },
 
     submitAnswers: function (userAnswers) {
-        const url = '/front/submitAnswers';
+        const url = '/submitAnswers';
         const formattedAnswers = {};
         for (const questionId in userAnswers) {
             formattedAnswers[questionId] = {
@@ -40,8 +40,11 @@ const quizApi = {
         })
         .then(response => response.json())
         .then(data => {
-            quizUI.createRadarChart(data.averageScores, data.titleNames); // 修改：傳遞 titleNames
-            return data; // 確保返回數據
+            // 將 averageScores 和 titleNames 儲存到 localStorage
+            localStorage.setItem('averageScores', JSON.stringify(data.averageScores));
+            localStorage.setItem('titleNames', JSON.stringify(data.titleNames));
+            // 將 averageScores 和 titleNames 返回
+            return { averageScores: data.averageScores, titleNames: data.titleNames };
         });
     }
 };

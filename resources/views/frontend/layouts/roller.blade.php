@@ -4,7 +4,7 @@
         <div class="row py-3 ">
             @foreach ($roller as $index => $item)
                 <div class="col-md-6 my-3 wow animate__animated animate__fadeIn{{ $index % 2 == 0 ? 'Left' : 'Right' }}" data-wow-duration="1s" data-wow-iteration="1">
-                    <a class="text-decoration-none text-white d-block d-flex justify-content-center align-item-center" href="{{ route('shop') }}" target="_blank">
+                    <a class="text-decoration-none text-white d-block d-flex justify-content-center align-item-center" href="{{ route($index % 2 == 0 ? 'shop' : 'assessment.index') }}" target="_blank">
                         <div class="box_roller">
                             <div class="roller_{{ $index % 2 == 0 ? 'left' : 'right' }} bg-cover" style="background-image: url('{{ asset($item->url) }}');"></div>
                             <h5 class="dish_text">{{ $index % 2 == 0 ? '產品一覽 Catalog' : '免費評估 Evaluate' }}</h5>

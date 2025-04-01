@@ -37,8 +37,14 @@
                         _token: '{{ csrf_token() }}' 
                     },
                     success: function(data){
-                        toastr.success(data.message);
-                        $("#customerlist-table").DataTable().ajax.reload(null, false);
+                        Swal.fire({
+                            title: '成功!',
+                            text: data.message,
+                            icon: 'success',
+                            confirmButtonText: '確定'
+                        }).then(function() {
+                            $("#customerlist-table").DataTable().ajax.reload(null, false)
+                        });
                     },
                     error: function(xhr, status, error){
                         console.log(error);

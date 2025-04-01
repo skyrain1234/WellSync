@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>結帳</title>
     <link rel="icon" href="./image/food/logo_small.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/all.min.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="{{asset('frontend/css/all.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     
-    <link rel="stylesheet" href="css/fenghua.css">
+    <link rel="stylesheet" href="{{ asset('frontend/css/fenghua.css') }}">
     <link rel="stylesheet" href="css/fenghua_index.css">
     <style>
         body {
@@ -49,6 +49,7 @@
             color: white;
             background-color: rgb(19, 105, 71);
         }
+        
     </style>
 </head>
 <body>
@@ -63,15 +64,26 @@
         <!-- Order Summary -->
         <div class="col-md-8">
             <h4>Order Details</h4>
-            <ul class="list-group mb-3" id="product_list">
-                <li class="list-group-item d-flex justify-content-between lh-sm">
-                    <div>
-                        <h6 class="my-0"></h6>
-                    </div>
-                    <div class="text-muted"></div>
-                    <span class="text-muted"></span>
-                </li>
-            </ul>
+                <table class="table  table-hover align-middle" >
+                    <thead>
+                        <tr >
+                            <th>產品名稱</th>
+                            <th>數量/份</th>
+                            <th>單價</th>
+                            <th>總價</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($order->orderItems as $orderitem)
+                        <tr >
+                            <td>{{ optional($orderitem->product)->name ?? '產品已下架' }}</td>
+                            <td>{{ $orderitem->quantity }}</td>
+                            <td>${{ $orderitem->price }}</td>
+                            <td>${{ $orderitem->quantity * $orderitem->price }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
         </div>
 
         <!-- Summary and Payment -->
@@ -85,7 +97,7 @@
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         <span>總金額</span>
-                        <strong id="total-price">{{$TotalAmount}}</strong>
+                        <strong id="total-price">${{$order->total_price}}</strong>
                     </li>
                 </ul>
             </div>
@@ -95,35 +107,39 @@
     <!-- Payment Form -->
     <div class="mt-4">
         <h4>付款資訊/Payment Information</h4>
-        <form>
+        <form action="{{ route('paymentSuccess',['id' => $order->id]) }}" method="POST">
+            @csrf
+            @method('PUT')
             <div class="mb-3">
                 <label for="cardName" class="form-label">持卡者姓名/Name on Card</label>
-                <input type="text" class="form-control" id="cardName" placeholder="John Doe" required>
+                <input type="text" class="form-control" name="cardName" id="cardName" placeholder="John Doe" required>
             </div>
 
             <div class="mb-3">
                 <label for="cardNumber" class="form-label">卡號/Credit Card Number</label>
-                <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" required>
+                <input type="text" class="form-control" name="cardNumber" id="cardNumber" placeholder="1234 5678 9012 3456" required>
             </div>
 
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="expiryDate" class="form-label">到期日/Expiry Date</label>
-                    <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" required>
+                    <input type="text" class="form-control" name="expiryDate" id="expiryDate" placeholder="MM/YY" required>
                 </div>
 
                 <div class="col-md-6 mb-3">
                     <label for="cvv" class="form-label">安全碼/CVV</label>
-                    <input type="text" class="form-control" id="cvv" placeholder="123" required>
+                    <input type="text" class="form-control" name="cvv" id="cvv" placeholder="123" required>
                 </div>
             </div>
+            <button type="submit" class="btn btn_addToCart w-100 mt-4" id="checkout_btn">確認交易</button>
         </form>
-        <button class="btn btn-submit w-100 mt-4" id="checkout_btn">確認交易</button>
+        
     </div>
 </div>
 
-<script src="js/bootstrap.bundle.min.js"></script>
-<script src="js/jquery-3.7.1.min.js"></script>
-<script src="js/sweetalert2@11.js"></script>
+<!-- js -->
+<script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('frontend/js/sweetalert2@11.js') }}"></script>
 </body>
 </html>

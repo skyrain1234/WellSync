@@ -47,7 +47,7 @@
  
                                 <li class="nav-item dropdown">
                                     <button class="bg-btn-navbar d-flex align-items-center" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="{{ asset( Auth::user()->avatar) }}" class="rounded-circle" height="30px" width="30px" >
+                                        <img src="{{ asset( Auth::user()->avatar ?? 'uploads/avatars/default_avatar_5407167.png') }}" class="rounded-circle" height="30px" width="30px" >
                                         <a  class="nav-link dropdown-toggle fs-6 mt-1" href="#" >
                                             {{ Auth::user()->name }}
                                         </a>

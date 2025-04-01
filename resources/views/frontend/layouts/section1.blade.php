@@ -6,7 +6,7 @@
                     <span>You</span>
                 </strong>
                 <p class="mt-5">不確定該吃什麼保健品？總是過期丟掉？<br>快速尋找最適合您的營養素</p>
-                <a href="#" class="btn btn_addToCart mt-5">免費評估</a>
+                <a href="{{route('assessment.index')}}" target="_blank" class="btn btn_addToCart mt-5">免費評估</a>
             </div>
         </div>
         <div class="row mt-5">

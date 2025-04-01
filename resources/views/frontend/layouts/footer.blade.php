@@ -1,5 +1,5 @@
 <!--  footer -->
-<footer id="fenghua_footer">
+<footer id="fenghua_footer" >
         <!-- ************info_area*************** -->
         <section  class=" align-content-center info_area">
             <div class="container">

@@ -89,7 +89,7 @@ class UserProfileController extends Controller
         $order->status = $request->status;
         $order->save();
         
-        return redirect()->route('frontend.member.profile')->with('success', '更新成功');;
+        return redirect()->route('frontend.member.profile')->with('success', '更新成功');
     }
     
 }

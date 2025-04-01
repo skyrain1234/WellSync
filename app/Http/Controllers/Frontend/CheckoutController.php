@@ -52,7 +52,8 @@ class CheckoutController extends Controller
         // **推送 Job 進隊列**
         ProcessOrder::dispatch($user->id, $cartTotal, $cartItems, $request->all());
 
-        return redirect()->back()->with('success', '訂單正在處理中，請稍後');
+        return redirect(route('member.profile') . '#order')->with('success', '訂單正在處理中，請稍後');
+
     }
 
 }

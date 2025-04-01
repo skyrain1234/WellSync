@@ -1,4 +1,5 @@
 @extends('frontend.layouts.form_master')
+
 @section('title')
     問題頁面
 @endsection
@@ -7,14 +8,13 @@
     <!-- 表單容器 -->
     <div class="form-container" id="form-container">
         <!-- 返回按鈕 -->
-        <button id ="prev-question" class="back-btn" onclick="previousQuestion()">上一頁</button>
+        <button id="prev-question" class="back-btn" onclick="previousQuestion()">上一頁</button>
         <h2 id="question-title">問題（目前：第 1 題）</h2>
         <hr class="separator" />
+
         <form action="#" method="post" id="question-form">
-            <meta name="csrf-token" content="{{ csrf_token() }}">
-            <div id="question-container" class="text-center" data-selected-goals="{{ json_encode($selectedGoals) }}">
+            <div id="question-container" class="text-center" style="text-align: center;" data-selected-goals="{{ json_encode($selectedGoals) }}">
                 <!-- 問題與選項會動態填入這裡 -->
-                
             </div>
 
             <!-- 隱藏的選擇結果輸入框 -->
@@ -23,7 +23,10 @@
             <input type="hidden" name="goals" id="goals" value="{{ json_encode($selectedGoals) }}">
 
             <!-- 下一題按鈕 -->
-            <button type="button" class="submit-btn" onclick="nextQuestion()">下一題</button>
+            <button id="next-question" type="button" class="submit-btn" onclick="nextQuestion()">下一題</button>
+            <a href="{{route('cart')}}">
+                <button id="last-question" type="button" class="submit-btn d-none" >進入購物車</button>
+            </a>
         </form>
     </div>
 
@@ -34,7 +37,8 @@
             <button class="popup-confirm" id="popupConfirm">確定</button>
         </div>
     </div>
-    <script type="module" src="{{asset('frontend/frontend_form/js/quizMain.js')}}"></script>
-    <script type="module" src="{{asset('frontend/frontend_form/js/popup.js')}}"></script>
-    
+
+    <!-- JS 引用 -->
+    <script type="module" src="{{ asset('frontend/frontend_form/js/quizMain.js') }}"></script>
+    <script type="module" src="{{ asset('frontend/frontend_form/js/popup.js') }}"></script>
 @endsection

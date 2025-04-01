@@ -126,7 +126,7 @@
                         <div class="row ">
                             <div class="col-6 text-end">
                                 <button type="submit" class="btn btn-primary">
-                                    更新
+                                    新增商品
                                 </button>
                             </div>
                             <div class="col-6">

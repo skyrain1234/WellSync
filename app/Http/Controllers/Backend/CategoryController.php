@@ -113,6 +113,6 @@ class CategoryController extends Controller
         $category->status = $request->status == 'true' ? 1 : 0;
         $category->save();
 
-        return response(['message' => '刪除成功']);
+        return response(['message' => '更新成功']);
     }
 }

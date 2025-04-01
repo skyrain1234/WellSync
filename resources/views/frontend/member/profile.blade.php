@@ -83,6 +83,9 @@ WellSync || Product Details
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="order-tab" data-bs-toggle="tab" data-bs-target="#order" type="button" role="tab" aria-controls="order" aria-selected="false">帳單管理</button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="chart-tab" data-bs-toggle="tab" data-bs-target="#chart" type="button" role="tab" aria-controls="chart" aria-selected="false">評估報表</button>
+                    </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active " id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -96,6 +99,11 @@ WellSync || Product Details
                         @include('frontend.member.layouts.orderList')
                         </div>
                     </div>
+                    <div class="tab-pane fade" id="chart" role="tabpanel" aria-labelledby="chart-tab">
+                        <div class="card p-3 text-center">
+                        @include('frontend.member.layouts.chart')
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -107,6 +115,7 @@ WellSync || Product Details
 @section('scripts')
 {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 <!-- Cropper.js CDN -->
+<script src="{{ asset('backend/js/chart.js') }}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // 獲取 URL 中的 fragment 部分 (例如: #order)
@@ -125,6 +134,7 @@ WellSync || Product Details
     })
 
 </script>
+<!-- 預覽圖片 -->
 <script>
     document.getElementById('imageInput').addEventListener('change', function(event) {
         let oldImagePreview = document.getElementById('oldImagePreview');
@@ -163,5 +173,96 @@ WellSync || Product Details
             table.ajax.url("{{ route('member.profile') }}?status=" + status).load();
         });
     });
+</script>
+
+<!-- 雷達圖 -->
+<script>
+$(document).ready(function () {
+    let hue = 0;
+    let intervalId = null;
+
+    function createRadarChart(titleNames, averageScores) {
+       new Chart(document.getElementById('acquisitions'), 
+       {
+            type: 'radar',
+            data: {
+                labels: titleNames,
+                datasets: [{
+                    label: '您的健康評估',
+                    data: averageScores,
+                    backgroundColor: 'rgba(25, 56, 5, 0.55)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#2E5D45',
+                            font: {
+                                size: 24,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            stepSize: 20,
+                            color: 'rgb(104, 104, 104)',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            backdropColor: 'rgba(207, 206, 206, 0)',
+                            borderWidth: 1,
+                            borderColor: 'rgba(0, 0, 0, 0.2)'
+                        },
+                        grid: {
+                            color: 'rgba(0, 128, 0, 0.3)'
+                        },
+                        angleLines: {
+                            color: 'rgba(0, 128, 0, 0.5)'
+                        },
+                        pointLabels: {
+                            color: '#2E5D45',
+                            font: {
+                                size: 20,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    $.when(
+        $.ajax({ url: "/Score", method: "GET", dataType: "json" }),
+        $.ajax({ url: "/api/formTitles", method: "GET", dataType: "json" })
+    ).done(function (scoreResponse, titleResponse) {
+        let scoreData = scoreResponse[0];
+        let titleNames = titleResponse[0];
+
+        let averageScores = [0, 0, 0, 0, 0]; // 預設值
+        if (scoreData.length > 0) {
+            try {
+                averageScores = JSON.parse(scoreData[0].averageScores);
+            } catch (error) {
+                console.error("解析 averageScores 時出錯:", error);
+            }
+        }
+        createRadarChart(titleNames, averageScores);
+    }).fail(function () {
+        console.error("獲取數據時發生錯誤");
+    });
+});
 </script>
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Traits\CartSync;
+use App\Traits\ScoreSync;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+
 class LoginController extends Controller
 {
     /*
@@ -24,7 +26,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers,CartSync;
+    use AuthenticatesUsers,CartSync,ScoreSync;
 
     /**
      * Where to redirect users after login.
@@ -102,5 +104,6 @@ class LoginController extends Controller
     public function authenticated(Request $request, $user)
     {
         $this->syncCartWithDatabase($user);
+        $this->syncScoreWithDatabase($request,$user);
     }
 }

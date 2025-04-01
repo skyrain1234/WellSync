@@ -64,7 +64,7 @@ WellSync || Product Details
                         <p class="title">{{$product->name}}</p>
                         <p class="title">{{$product->slug}}</p>
                         @if ($product->price > 0)
-                        <h4><span>${{$product->price}}/顆</span> <span class="category-label">{{$product->category->name}} </span></h4>
+                        <h4><span>${{$product->price}}/份</span> <span class="category-label">{{$product->category->name}} </span></h4>
                         @else
                         <h4><span>詳細金額請撥打客服詢問</span> <span class="category-label">{{$product->category->name}} </span></h4>
                         @endif
@@ -72,9 +72,9 @@ WellSync || Product Details
                         
                         <hr />
                         @if ($product->qty > 0)
-                        <p class="product__stock_area"><span class="in_stock">庫存量</span> ({{$product->qty}} /顆)</p>
+                        <p class="product__stock_area"><span class="in_stock">庫存量</span> ({{$product->qty}} /份)</p>
                         @elseif ($product->qty === 0)
-                        <p class="product__stock_area"><span class="in_stock">缺貨中</span> ({{$product->qty}} /顆)</p>
+                        <p class="product__stock_area"><span class="in_stock">缺貨中</span> ({{$product->qty}} /份)</p>
                         @endif
                         
                         <!-- 星級評分 -->

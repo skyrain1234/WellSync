@@ -99,11 +99,14 @@
                 </a>
             </div>
             <div class="col-6">
-                <form action="{{ route('paymentTest') }}">
+                <form action="{{ route('createOrder') }}" method="get">
+                    @csrf
                     <input type="hidden" name="MerchantTradeNo" value="{{$order->order_no}}">
                     <input type="hidden" name="TotalAmount" value="{{$order->total_price}}">
                     <input type="hidden" name="ItemName" value="WellSync商品一批X1">
-                    <button type="submit" class="btn btn_addToCart w-25">前往付款</button>
+                    <button type="submit"  class="btn btn_addToCart w-25" @if(!in_array($order->status, ['unpaid'])) disabled @endif>
+                        前往付款
+                    </button>
                 </form>
             </div>
         </div>
@@ -153,7 +156,6 @@
                     $("#countdown-area").closest('.alert').removeClass('alert-warning').addClass('alert-success');
                     return;
                 }
-
             }
 
             let minutes = Math.floor((timeLeft / 1000 / 60) % 60);

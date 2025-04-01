@@ -1,10 +1,13 @@
 <?php
 namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use Ecpay\Sdk\Factories\Factory;
 use Ecpay\Sdk\Services\UrlService;
 use Ecpay\Sdk\Response\VerifiedArrayResponse;
+use Ecpay\Sdk\Services\CheckMacValueService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 require __DIR__ . '/../../../../vendor/autoload.php';
 
@@ -28,45 +31,28 @@ class PaymentController extends Controller
             'ItemName'          => $request->ItemName,
             'ChoosePayment'     => 'ALL',
             'EncryptType'       => 1,
-        
             // 請參考 example/Payment/GetCheckoutResponse.php 範例開發
             'ReturnURL'         => 'https://www.ecpay.com.tw/example/receive',
-            'OrderResultURL'    => '',
-            // https://a970-118-163-218-100.ngrok-free.app/getOrder
+            'OrderResultURL'    => url('/api/fake-payment-success'),
         ];
         $action = env('ECPAY_URL');
         
         echo $autoSubmitFormService->generate($input, $action);
     }
 
-    public function getCheckoutResponse(){
-        $factory = new Factory([
-            'hashKey' => env('ECPAY_HASH_KEY'),
-            'hashIv'  => env('ECPAY_HASH_IV'),
-        ]);
-        $checkoutResponse = $factory->create(VerifiedArrayResponse::class);
-        
-        // 模擬綠界付款結果回傳格式範例，非真實付款結果
-        $_POST = [
-            'MerchantID'           => env('ECPAY_MERCHANT_ID'),
-            'MerchantTradeNo'      => 'WPLL4E341E122DB44D62',
-            'PaymentDate'          => '2019/05/09 00:01:21',
-            'PaymentType'          => 'Credit_CreditCard',
-            'PaymentTypeChargeFee' => '1',
-            'RtnCode'              => '1',
-            'RtnMsg'               => '交易成功',
-            'SimulatePaid'         => '0',
-            'TradeAmt'             => '500',
-            'TradeDate'            => '2019/05/09 00:00:18',
-            'TradeNo'              => '1905090000188278',
-            'CheckMacValue'        => '6E7F053EF215FC851A050A2FF01D72CBE440EA138DC3E905647985DDF236FD25',
-        ];
-        
-        var_dump($checkoutResponse->get($_POST));
-    }
-
-    public function checkOutTest(Request $request){
-        $TotalAmount = $request->TotalAmount;
-        return view('frontend.member.checkout',compact('TotalAmount'));
+    public function fakePaymentSuccess(Request $request)
+    {
+        // 模擬綠界付款回應
+        $input = $request->all();
+        // Log::info('Fake Payment Callback', $input);
+        $order = Order::where('order_no', $input['MerchantTradeNo'])->select('id', 'status', 'updated_at')->first();
+        if (isset($input['RtnCode']) && $input['RtnCode'] == '1') {
+            if ($order) {
+                $order->status = 'pending';  // 更新訂單狀態
+                $order->updated_at = now();
+                $order->save();
+            }
+        }
+        return redirect()->route('member.profile.orderDetail',['id' => $order->id])->with('success', '結帳成功');
     }
 }

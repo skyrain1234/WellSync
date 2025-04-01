@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class AdminLoginController extends Controller
 {
@@ -25,22 +29,22 @@ class AdminLoginController extends Controller
             'password' => 'required',
             'g-recaptcha-response' => app()->environment('local') ? 'nullable' : 'required',
         ]);
-        
-        // ✅ 本地環境時，沒勾選 reCAPTCHA 也顯示錯誤
+
+        $this->checkLoginAttempts($request); // ✅ 檢查登入次數，超過限制則鎖定
+
         if (app()->environment('local') && !$request->input('g-recaptcha-response')) {
             return back()->withErrors(['captcha' => '請勾選 reCAPTCHA 驗證'])->with('error', '請勾選 reCAPTCHA 驗證');
         }
-        
-        // ✅ 正式環境時，才執行 reCAPTCHA API 驗證
+
         if (!app()->environment('local')) {
             $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
                 'secret'   => config('services.recaptcha.secret_key'),
                 'response' => $request->input('g-recaptcha-response'),
                 'remoteip' => $request->ip(),
             ]);
-        
+
             $responseBody = $response->json();
-        
+
             if (!$responseBody['success']) {
                 $errorMessage = 'reCAPTCHA 驗證失敗，請重試。';
                 if (isset($responseBody['error-codes'])) {
@@ -50,33 +54,71 @@ class AdminLoginController extends Controller
             }
         }
 
-        // 驗證帳密
         $credentials = $request->only('email', 'password');
 
-        // 先查找帳號是否存在
-        $user = \App\Models\User::where('email', $credentials['email'])->first();
+        $user = User::where('email', $credentials['email'])->first();
 
         if (!$user) {
+            $this->incrementLoginAttempts($request); // ✅ 增加錯誤次數
             return back()->with('error', '帳號或密碼錯誤');
         }
 
-        // 檢查角色權限
         if ($user->role !== 'admin') {
             return redirect()->route('home.index'); // 無權限
         }
 
-        // 嘗試登入
         if (Auth::attempt($credentials)) {
-            return redirect()->route('admin.dashboard.index'); // 進後台
+            $this->clearLoginAttempts($request); // ✅ 成功登入後清除錯誤次數
+            return redirect()->route('admin.dashboard.index');
         }
 
-        return back()->with('error', '帳號或密碼錯誤'); // 密碼錯誤
-        }
-
+        $this->incrementLoginAttempts($request); // ✅ 增加錯誤次數
+        return back()->with('error', '帳號或密碼錯誤');
+    }
 
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('admin.login'); // 登出後回到管理員登入頁
+        return redirect()->route('admin.login');
+    }
+
+    /**
+     * ✅ 取得登入嘗試的 key
+     */
+    protected function getThrottleKey(Request $request)
+    {
+        return Str::lower($request->input('email')) . '|' . $request->ip();
+    }
+
+    /**
+     * ✅ 檢查登入嘗試次數，超過限制則鎖定
+     */
+    protected function checkLoginAttempts(Request $request)
+    {
+        $key = $this->getThrottleKey($request);
+        if (RateLimiter::tooManyAttempts($key, 3)) {
+            Log::warning("管理者帳號被鎖定: {$request->input('email')} IP: {$request->ip()}");
+            throw ValidationException::withMessages([
+                'email' => ['您已嘗試登入過多次，請在 ' . RateLimiter::availableIn($key) . ' 秒後再試。'],
+            ]);
+            
+        }
+    }
+
+    /**
+     * ✅ 增加錯誤登入次數
+     */
+    protected function incrementLoginAttempts(Request $request)
+    {
+        RateLimiter::hit($this->getThrottleKey($request), 60 * 5); // 5 分鐘內最多 5 次
+    }
+
+    /**
+     * ✅ 成功登入後清除錯誤次數
+     */
+    protected function clearLoginAttempts(Request $request)
+    {
+        RateLimiter::clear($this->getThrottleKey($request));
     }
 }
+

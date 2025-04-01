@@ -49,7 +49,7 @@
 <div class="container mt-3 mb-2">
     <div class="row justify-content-center">
         <div class="col-xl-6 text-center d-xl-block d-none ">
-            <img src="{{ asset('uploads/download.png') }}" alt="" style="width:  35vw;">
+            <img src="{{ asset('uploads/download.png') }}" alt="" style="width: 90%;">
         </div>
         <div class="col-xl-6">
             <div class="container rounded-4  p-4 " style="max-width: 500px; background-color: rgba(163, 163, 163, 0.05);">
@@ -103,7 +103,9 @@
                                 </div>
                             @endif
                         </div>
-                    </div>                        
+                    </div>
+                    <input id ="averageScores" type="hidden" name="averageScores" value="" >
+
                     <button type="submit" class="btn btn_login w-100 text-title fs-5">{{ __('登入') }}</button>
                 </form>
                  <!-- 底部切換按鈕 -->
@@ -119,4 +121,22 @@
 @endsection
 @section('scripts')
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+    $(document).ready(function () {
+        let averageScores = localStorage.getItem('averageScores');
+
+        if (averageScores) {
+            $('#averageScores').val(averageScores);
+        }
+        
+        // 監聽表單提交事件
+        $('#login-form').submit(function(event) {
+            // 在表單提交時，清除 localStorage
+            localStorage.clear();
+            console.log("localStorage 已清除");
+        });
+
+    });
+    
+</script>
 @endsection

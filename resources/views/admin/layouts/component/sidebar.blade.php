@@ -59,14 +59,6 @@
                                 <p>網頁管理</p>
                                 <i class="fas fa-angle-left right"></i>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item ms-2">
-                                    <a href="{{ route('admin.product.category.index') }}" class="nav-link {{ request()->is('admin/product/category*') ? 'active' : '' }}" >
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>頁首管理(navbar)</p>
-                                    </a>
-                                </li>
-                            </ul>
                             <!-- 頁尾 -->
                             <ul class="nav nav-treeview">
                                 <li class="nav-item ms-2 {{ $sidebar['htmlContent'] ? 'menu-open' : '' }}">

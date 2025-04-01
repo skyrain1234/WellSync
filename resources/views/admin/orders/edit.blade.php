@@ -85,7 +85,8 @@
                         <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>完成</option>
                         <option value="canceled" {{ $order->status == 'canceled' ? 'selected' : '' }} disabled>取消</option>
                     </select>
-                    <button class="btn btn-success" type="submit" {{ $order->status == 'canceled' ? 'disabled' : '' }}>更新狀態</button>
+                    <button class="btn btn-success" type="submit" {{ $order->status == 'canceled' || $order->status == 'completed' ? 'disabled' : '' }}
+                    >更新狀態</button>
                 </div>
             </form>
         </div>

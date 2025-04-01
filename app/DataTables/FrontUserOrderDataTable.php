@@ -35,13 +35,13 @@ class FrontUserOrderDataTable extends DataTable
     private function getStatusColor($status)
     {
         $statusColorMap = [
-            'unpaid'=>'orange',
-            'pending' => 'orange',
-            'processing' => 'blue',
-            'shipped' => 'green',
-            'completed' => 'darkgreen',
-            'canceled' => 'red',
-        ];
+            'unpaid' => '#FF4500',      // **橘紅色 (更鮮豔，提醒付款)**
+            'pending' => '#FFA500',     // **金黃色 (表示等待處理)**
+            'processing' => '#007BFF',  // **藍色 (處理中)**
+            'shipped' => '#28A745',     // **亮綠 (已出貨)**
+            'completed' => '#006400',   // **深綠 (交易完成)**
+            'canceled' => '#DC3545',    // **紅色 (已取消)**
+        ];        
 
         return $statusColorMap[$status] ?? 'gray';
     }
@@ -102,7 +102,7 @@ class FrontUserOrderDataTable extends DataTable
                     ->setTableId('frotnUserOrder-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->orderBy('0')
+                    ->orderBy('3')
                     ->buttons([
                         Button::make('excel'),
                         Button::make('csv'),
@@ -136,7 +136,7 @@ class FrontUserOrderDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id')->title('訂單編號'),
+            Column::make('order_no')->title('訂單編號'),
             Column::make('status')->title('狀態'),
             Column::make('total_price')->title('總金額'),
             Column::make('created_at')->title('建立時間'),

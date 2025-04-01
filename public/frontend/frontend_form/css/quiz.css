@@ -103,10 +103,6 @@
     transform: translateY(-2px); /* 向上微調 */
 }
 
-.goal-item.selected {
-    background-color: #2E5D45; /* 深綠色 */
-    color: white; /* 文字顏色改為白色 */
-}
 
 /* 目標分類樣式end */
 

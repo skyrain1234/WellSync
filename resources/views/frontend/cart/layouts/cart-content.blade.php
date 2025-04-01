@@ -4,11 +4,11 @@
     </div>
     <div class="card-body ">
         <div class="d-none d-lg-block">
-            <table class="table table-hover table-bordered text-center ">
+            <table class="table table-hover table-bordered text-center" style="border: 1px solid #C2BCB1;">
                 @if($cartItems->count() == 0)
                     <p class="text-center text-danger">您的購物車是空的！</p>
                     @else
-                    <thead  >
+                    <thead >
                         <tr class="fw-bold h5">
                             <td>產品圖片</td>
                             <td>產品名稱</td>

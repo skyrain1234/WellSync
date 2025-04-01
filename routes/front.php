@@ -14,8 +14,7 @@ use App\Http\Controllers\Frontend\UserProfileController;
 use Illuminate\Support\Facades\Response; // ✅ Laravel 的 Response 類
 use App\Http\Controllers\Frontend\AssessmentController;
 use App\Http\Controllers\Frontend\QuizController;
-
-
+use App\Http\Controllers\Frontend\UserScoreData;
 
 // 首頁
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
@@ -79,7 +78,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/member/profile/edit', [UserProfileController::class, 'profileEdit'])->name('member.profile.edit');
     Route::get('/member/profile/orderDetail/{id}', [UserProfileController::class, 'orderDetail'])->name('member.profile.orderDetail');
     Route::put('/member/profile/orderDetail/update/{id}', [UserProfileController::class, 'orderUpdate'])->name('member.profile.orderDetail.update');
-
+    // 串接綠界測試
+    Route::get('/createOrder',[PaymentController::class,'createOrder'])->name('createOrder');
     // 撰寫評論頁面
     Route::get('/reviews/write', function () {
         return view('frontend.reviews.write');
@@ -88,26 +88,24 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/reviews/store', [ReviewController::class, 'store'])->name('reviews.store');
 });
 
+
+
 // ✅ 【獨立的評論頁面】（只顯示評論）
 Route::get('/reviews', [HomeController::class, 'reviews'])->name('reviews.index');
 
-// 串接綠界測試
-Route::get('/createOrder',[PaymentController::class,'createOrder'])->name('createOrder');
-Route::get('/getOrder',[PaymentController::class,'getCheckoutResponse'])->name('getOrder');
-Route::get('/paymentTest',[PaymentController::class,'checkOutTest'])->name('paymentTest');
-
-
-
-Route::prefix('front')->group(function (){
-    Route::get('/lab', [AssessmentController::class, 'index'])->name('assessment.index');
-    Route::get('/quiz', [QuizController::class, 'index'])->name('quiz.index');
-});
+Route::get('/assessment', [AssessmentController::class, 'index'])->name('assessment.index');
+Route::get('/quiz', [QuizController::class, 'index'])->name('quiz.index');
 
 
 //顯示問題頁面的路由
-Route::get('/front/showQuestions', [QuizController::class, 'showQuestionsView'])->name('questions.view');
+Route::get('showQuestions', [QuizController::class, 'showQuestionsView'])->name('questions.view');
 //透過ajax取得問題
-Route::post('/front/showQuestions', [QuizController::class, 'showQuestions'])->name('questions.show');
+Route::post('showQuestions', [QuizController::class, 'showQuestions'])->name('questions.show');
 
 // 處理答案的路由
-Route::post('/front/submitAnswers', [QuizController::class, 'submitAnswers'])->name('questions.submit');
+Route::post('/submitAnswers', [QuizController::class, 'submitAnswers'])->name('questions.submit');
+// 將推薦商品加入購物車
+Route::post('/recommend-products', [QuizController::class, 'getRecommendations'])->name('quiz.recommend');
+
+// 獲取分數
+Route::get('/Score', [UserScoreData::class, 'getUserScoreData']);

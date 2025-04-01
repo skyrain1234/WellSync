@@ -56,7 +56,7 @@ function validateForm(){
 
     if (isValid) {
         // 如果表單驗證通過，則跳轉到下一頁
-        window.location.href = '/front/quiz'; // 跳轉到 quiz.index 路由
+        window.location.href = '/quiz'; // 跳轉到 quiz.index 路由
     } else {
         // 如果表單驗證未通過，則顯示彈跳視窗
         popupModule.popup.style.display = 'flex'; // 讓彈跳視窗顯示出來

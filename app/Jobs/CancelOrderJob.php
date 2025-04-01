@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\Order;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CancelOrderJob implements ShouldQueue
@@ -24,23 +25,25 @@ class CancelOrderJob implements ShouldQueue
     /**
      * 執行 Job
      */
+
     public function handle()
     {
-        if ($this->order->status === 'unpaid') {
-            // 更新訂單狀態為已取消
-            $this->order->status = 'canceled';
-            $this->order->save();
+        DB::transaction(function () {
+            // 重新查詢訂單，確保最新狀態，並鎖住這筆訂單
+            $order = Order::lockForUpdate()->find($this->order->id);
 
-            // 回補庫存
-            foreach ($this->order->orderitems as $item) {
-                $product = $item->product;
-                if ($product) {
-                    $product->qty += $item->quantity;
-                    $product->save();
+            if ($order && $order->status === 'unpaid') {
+                // 更新訂單狀態為已取消
+                $order->status = 'canceled';
+                $order->save();
+
+                // 回補庫存（使用 increment 避免 race condition）
+                foreach ($order->orderitems as $item) {
+                    $item->product?->increment('qty', $item->quantity);
                 }
-            }
 
-            Log::info("訂單 {$this->order->id} 已取消，庫存已補回。");
-        }
+                Log::info("訂單 {$order->id} 已取消，庫存已補回。");
+            }
+        });
     }
 }

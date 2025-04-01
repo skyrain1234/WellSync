@@ -47,9 +47,9 @@
 </style>
 
 <div class="container mt-3 mb-2">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mt-auto mb-auto">
         <div class="col-xl-6 text-center d-xl-block d-none ">
-            <img src="{{ asset('uploads/download.png') }}" alt="" style="width:  40vw;">
+            <img src="{{ asset('uploads/download.png') }}" alt="" style="width: 90%;">
         </div>
         <div class="col-xl-6">
             <div class="container rounded-4  p-4 " style="max-width: 500px; background-color: rgba(163, 163, 163, 0.05);">

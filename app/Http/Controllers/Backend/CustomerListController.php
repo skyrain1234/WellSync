@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Backend;
 
 use App\DataTables\CustomerListDataTable;
 use App\Http\Controllers\Controller;
-use App\Models\Member;
 use App\Models\User;
 use Illuminate\Http\Request;
 

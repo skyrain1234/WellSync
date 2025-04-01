@@ -63,8 +63,14 @@
                         id: id
                     },
                     success: function(data){
-                        toastr.success(data.message);
-                        $("#category-table").DataTable().ajax.reload(null, false);
+                        Swal.fire({
+                              title: '成功!',
+                              text: data.message,
+                              icon: 'success',
+                              confirmButtonText: '確定'
+                          }).then(function() {
+                              $("#category-table").DataTable().ajax.reload(null, false);
+                          });
                     },
                     error: function(xhr, status, error){
                         console.log(error);

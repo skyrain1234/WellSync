@@ -36,6 +36,11 @@
         <main class="d-flex justify-content-center align-items-center" style=" padding-top: 60px;">
             <div class="card shadow-lg p-5 border-0" style="width: 400px; border-radius: 10px;">
                 <h2 class="text-center mb-4 fw-bold text-primary">管理員登入</h2>
+                    @error('email')
+                        <div class="alert alert-danger text-center">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 <form method="POST" action="{{ route('admin.login') }}">
                     @csrf
                     <div class="mb-3">
