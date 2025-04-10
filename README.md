@@ -1,6 +1,6 @@
 ## 資料表下載
 
-[點擊這裡下載資料表](https://drive.google.com/file/d/1MXW2EhWg_e8KN8mBkpjqLjV-FOcd72nl/view?usp=drive_link)
+[點擊這裡下載資料表](https://drive.google.com/file/d/1LfvcsFutw7XaaEMK16vUreSlecN2e9Bn/view?usp=sharing)
 
 ## 如何使用
 終端機 輸入
