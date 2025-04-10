@@ -33,8 +33,7 @@ http://127.0.0.1:8000
 ->終端機 輸入 php artisan queue:work
 
 ## 網頁
-
-
+![桌面_x264 (2)](https://github.com/user-attachments/assets/b6f5cab1-150f-4231-aa4f-b3fea32353d6)
 ![手機_x264](https://github.com/user-attachments/assets/9db5b6e7-6d47-4824-861f-6ddac74b497d)
 
 
