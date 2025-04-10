@@ -32,6 +32,8 @@ http://127.0.0.1:8000
 </br>
 ->終端機 輸入 php artisan queue:work
 
+## 網頁
+
 
 ## 後台
 http://127.0.0.1:8000/admin/login
