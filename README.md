@@ -33,18 +33,12 @@ http://127.0.0.1:8000
 ->終端機 輸入 php artisan queue:work
 
 
-## API串接測試
-http://127.0.0.1:8000/api/test
-</br>請先確認php artisan serve是否啟動
-</br>對外的api 需寫在route/api.php
-</br>若成功串接可獲得會員資料
-
 ## 後台
 http://127.0.0.1:8000/admin/login
 </br>
-測試帳號:admin@example.com
+測試帳號 : admin@example.com
 </br>
-密碼:password
+密碼     : password
 ![image](https://github.com/user-attachments/assets/5071c0ca-49d0-412b-a99b-ce5310a66efc)
 ![image](https://github.com/user-attachments/assets/8239b8c5-81fc-46d2-b878-0ab9a417212d)
 ![image](https://github.com/user-attachments/assets/034e821d-9689-4149-bba7-6dfacf460e92)
