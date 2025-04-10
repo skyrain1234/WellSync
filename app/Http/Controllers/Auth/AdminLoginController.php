@@ -59,9 +59,15 @@ class AdminLoginController extends Controller
         $user = User::where('email', $credentials['email'])->first();
 
         if (!$user) {
-            $this->incrementLoginAttempts($request); // ✅ 增加錯誤次數
-            return back()->with('error', '帳號或密碼錯誤');
+            $this->incrementLoginAttempts($request);
+        
+            $remaining = RateLimiter::remaining($this->getThrottleKey($request), 3);
+        
+            return back()->withErrors([
+                'email' => '帳號或密碼錯誤。你還可以嘗試 ' . $remaining . ' 次。',
+            ]);
         }
+        
 
         if ($user->role !== 'admin') {
             return redirect()->route('home.index'); // 無權限
@@ -72,8 +78,14 @@ class AdminLoginController extends Controller
             return redirect()->route('admin.dashboard.index');
         }
 
-        $this->incrementLoginAttempts($request); // ✅ 增加錯誤次數
-        return back()->with('error', '帳號或密碼錯誤');
+        $this->incrementLoginAttempts($request);
+
+        $remaining = RateLimiter::remaining($this->getThrottleKey($request), 3);
+        
+        return back()->withErrors([
+            'email' => '帳號或密碼錯誤。你還可以嘗試 ' . $remaining . ' 次。',
+        ]);
+        
     }
 
     public function logout()
@@ -99,7 +111,8 @@ class AdminLoginController extends Controller
         if (RateLimiter::tooManyAttempts($key, 3)) {
             Log::warning("管理者帳號被鎖定: {$request->input('email')} IP: {$request->ip()}");
             throw ValidationException::withMessages([
-                'email' => ['您已嘗試登入過多次，請在 ' . RateLimiter::availableIn($key) . ' 秒後再試。'],
+                'email' => ['您已嘗試登入過多次，請在 ' . ceil(RateLimiter::availableIn($key) / 60) . ' 分鐘後再試。'
+],
             ]);
             
         }

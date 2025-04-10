@@ -21,6 +21,9 @@
     "dependencies": {
         "@cropper/element-canvas": "^2.0.0",
         "chart.js": "^4.4.8",
-        "cropperjs": "^2.0.0"
+        "cropperjs": "^2.0.0",
+        "datatables.net-buttons": "^3.2.2",
+        "datatables.net-buttons-dt": "^3.2.2",
+        "pdfmake": "^0.2.18"
     }
 }

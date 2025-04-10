@@ -76,8 +76,8 @@
                 <div class="col-md-4 mb-4 wow animate__animated animate__fadeIn ">
                     <div class="card d-flex flex-column h-100">
                         
-                        <a href="{{ route('shop.product-detail', $product->name) }}">
-                            <img src="{{ asset($product->thumb_image) }}" style="height: 200px; object-fit: cover;" class="card-img-top" alt="Product Image">
+                        <a href="{{ route('shop.product-detail', $product->name) }}" class="mt-2">
+                            <img src="{{ asset($product->thumb_image) }}" style="height: 200px; object-fit: contain;" class="card-img-top" alt="Product Image">
                         </a>
                         
                         <div class="card-body text-center d-flex flex-column">

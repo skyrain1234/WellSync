@@ -11,7 +11,7 @@
             <ion-icon name="bag-handle-outline"></ion-icon>
         </i>
         </div>
-        <a href="{{ route('admin.order.index') }}" class="small-box-footer update-chart">詳細資訊<i class="fas fa-arrow-circle-right"></i></a>
+        <a href="{{ route('admin.order.index') }}?status=pending" class="small-box-footer update-chart">詳細資訊<i class="fas fa-arrow-circle-right"></i></a>
     </div>
     </div>
     <!-- ./col -->

@@ -40,6 +40,7 @@
 @endsection
 
 @push('scripts')
+
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 
     <script>

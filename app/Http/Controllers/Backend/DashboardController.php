@@ -92,6 +92,7 @@ class DashboardController extends Controller
         // 總庫存為 0 的商品數量
         $count = Product::where('updated_at', '>=', $startDate)
             ->where('qty', 0)
+            ->orWhereColumn('qty', '<', 'stock_warning_threshold')
             ->count();
 
         // 設定顏色

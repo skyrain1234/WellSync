@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('title')
-    庫存為 0 的產品
+    庫存不足的產品
 @endsection
 
 @section('content')

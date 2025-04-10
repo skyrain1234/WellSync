@@ -48,32 +48,20 @@ class ProductStockZeroTable extends DataTable
                 ';
                 return $button;
             })
-            ->addColumn('type', function($query){
-                switch ($query->product_type) {
-                    case 'new_arrival':
-                        return '<span class="badge badge-success fs-5">新品</span>';
-                        break;
-                    case 'featured_product':
-                        return '<span class="badge badge-warning fs-5">精選產品</span>';
-                        break;
-                    case 'top_product':
-                        return '<span class="badge badge-info fs-5">暢銷商品</span>';
-                        break;
-
-                    case 'best_product':
-                        return '<span class="badge badge-danger fs-5">最佳商品</span>';
-                        break;
-
-                    default:
-                        return '<span class="badge badge-dark fs-5">無</span>';
-                        break;
-                }
-            })
             ->addColumn('image', function($query){
                 // 圖片區域
                 return "<img width='100px' height='100px' style='object-fit: contain;' src='".asset($query->thumb_image)."' ></img>";
             })
-            ->rawColumns(['image','type','action', 'status'])
+            ->addColumn('stock_status', function ($query) {
+                if ($query->qty <= 0) {
+                    return '<span class="badge bg-danger fs-6">已缺貨</span>';
+                } elseif ($query->qty < ($query->stock_warning_threshold ?? 50)) {
+                    return '<span class="badge bg-warning text-dark fs-6">即將缺貨</span>';
+                } else {
+                    return '<span class="badge bg-success fs-6">庫存正常</span>';
+                }
+            })
+            ->rawColumns(['image','action', 'status','stock_status'])
             ->setRowId('id');
     }
 
@@ -82,7 +70,11 @@ class ProductStockZeroTable extends DataTable
      */
     public function query(Product $model): QueryBuilder
     {
-        return $model->where('qty', 0)->with('category')->newQuery();
+        return $model->where(function ($query) {
+            $query->where('qty', 0)
+                  ->orWhereColumn('qty', '<', 'stock_warning_threshold');
+        })->with('category')->newQuery();
+        
     }
 
     /**
@@ -94,7 +86,7 @@ class ProductStockZeroTable extends DataTable
                     ->setTableId('product-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    //->dom('Bfrtip')
+                    // ->dom('Bfrtip')
                     ->orderBy(0)
                     ->selectStyleSingle()
                     ->buttons([
@@ -113,11 +105,17 @@ class ProductStockZeroTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id')->title('ID')->addClass('text-center'),
+            Column::make('id')->title('產品編號')->addClass('text-center'),
             Column::make('image')->title('圖片')->height(100),
-            Column::make('name')->title('商品名稱')->addClass('text-center'),
+            Column::make('name')->title('商品名稱')->addClass(''),
+            Column::make('price')->title('價格')->width(100)->addClass('text-center'),
             Column::make('qty')->title('庫存')->addClass('text-center'),
-            Column::make('type')->width(150),
+            Column::computed('stock_status')
+            ->title('庫存狀態')
+            ->exportable(false)
+            ->printable(true)
+            ->width(120)
+            ->addClass('text-center'),
             Column::computed('category')->title('產品類別')->width(100)->addClass('')// 使用 computed 來自定義顯示
                 ->data('category.name') // 指定 category 的 name 欄位
                 ->name('category.name') // 這裡也要設置 name 來確保排序和搜尋可用
@@ -127,7 +125,7 @@ class ProductStockZeroTable extends DataTable
             Column::computed('action')->title('編輯/刪除')
             ->exportable(false)
             ->printable(false)
-            ->width(200)
+            ->width(150)
             ->addClass('text-center'),
         ];
     }

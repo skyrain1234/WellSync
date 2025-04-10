@@ -31,6 +31,7 @@ class HomeController extends Controller
             ->get(['id', 'name', 'thumb_image']);
 
         // 取得最近 6 筆 4 星以上的評論
+        
         $avgRating = ProductReview::where('status', 1)->avg('rating') ?? 0;
         $reviews = ProductReview::where('status', 1)
             ->where('rating', '>=', 4)
@@ -42,6 +43,7 @@ class HomeController extends Controller
                 $review->formatted_date = Carbon::parse($review->created_at)->format('Y-m-d H:i');
                 return $review;
             });
+
         $roller = Index_roller::get();
         $memberCount = User::count(); // 計算 users 表的總數
 

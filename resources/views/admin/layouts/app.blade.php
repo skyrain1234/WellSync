@@ -23,15 +23,19 @@
 
     <!-- summernote文字編輯器 -->
     <link rel="stylesheet" href="{{asset('css/summernote/summernote-bs5.css')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <style>
         .dataTable td {
             vertical-align: middle !important;
         }
         /* 確保通知顯示在最上層 */
-            .fl-wrapper {
-                z-index: 9999 !important;  /* 設置為非常高的 z-index，確保它顯示在最上面 */
-            }
+        .fl-wrapper {
+            z-index: 9999 !important;  /* 設置為非常高的 z-index，確保它顯示在最上面 */
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
     </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">

@@ -28,7 +28,7 @@
     <div class="row">
         <div class="alert alert-warning text-center">
             <strong id="countdown-area" data-status="{{ $order->status }}" >請在 
-                <span id="countdown-timer" data-time="{{ $order->created_at }}">
+                <span id="countdown-timer" data-time="{{ $order->created_at->toIso8601String() }}">
                     
                 </span> 內完成付款，否則訂單將被取消！
             </strong>

@@ -11,7 +11,7 @@
             <div class="card-header">訂單管理</div>
             <select id="statusFilter" class="form-control w-25 ms-auto me-auto mt-2 ">
                 <option value="" class="bg-secondary">查看全部</option>
-                <option value="pending" class="bg-secondary" >未處理</option>
+                <option value="pending" class="bg-secondary" selected>未處理</option>
                 <option value="processing" class="bg-secondary">撿貨中</option>
                 <option value="shipped" class="bg-secondary">運送中</option>
                 <option value="completed" class="bg-secondary">已完成</option>

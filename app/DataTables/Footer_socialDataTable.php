@@ -87,7 +87,7 @@ class Footer_socialDataTable extends DataTable
         return [
             Column::make('name')->title('名稱'),
             Column::make('url')->title('網址'),
-            Column::make('status')->width(100)->addClass('text-center ')->title('上/下架'),
+            Column::make('status')->width(120)->addClass('text-center ')->title('啟用/停用'),
             Column::computed('action')
             ->title('編輯')
             ->exportable(false)

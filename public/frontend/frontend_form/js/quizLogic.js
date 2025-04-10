@@ -106,6 +106,11 @@ const quizLogic = {
                 });
                 $("#next-question").addClass("d-none");
                 $("#last-question").removeClass("d-none");
+                Swal.fire({
+                    title: "已將推薦商品加入購物車",
+                    icon: "success",
+                    footer: '<a href="/cart"><button class="btn btn-success">前往購物車</button></a>'
+                  });
         } else {
             // 否則，顯示下一題
             quizUI.showQuestion(currentQuestionIndex, quizData.getAllQuestions());
