@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,7 @@ Route::get('/test',[CustomerListController::class,'test']);
 Route::post('/fake-payment-success', [PaymentController::class, 'fakePaymentSuccess'])->name('fake-payment-success');
 
 Route::get('/formTitles', [FormTitleController::class, 'getFormTitles']); // 新增的路由
+
+Route::post('/login', [AuthApiController::class, 'login']);
+Route::post('/logout', [AuthApiController::class, 'logout']);
+Route::middleware('auth:sanctum')->get('/user', [AuthApiController::class, 'user']);
