@@ -11,6 +11,7 @@ use App\Http\Controllers\CartController;
 require base_path('routes/admin.php');
 require base_path('routes/front.php');
 
+Auth::get("google-login")
 
 
 Auth::routes();
